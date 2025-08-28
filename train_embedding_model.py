@@ -14,7 +14,7 @@ from utils.losses import get_loss, get_xbm_loss_func
 from utils.data_loader import ImageDataset, load_dataset, load_dataloader
 import warnings
 from utils.utils import seed_torch
-from train import train
+from utils.trainer import train
 from pytorch_metric_learning.utils.inference import CustomKNN
 
 warnings.filterwarnings("ignore")

@@ -14,7 +14,7 @@ from utils.losses import get_loss, get_xbm_loss_func
 from utils.data_loader import ImageDataset, load_dataset, load_dataloader
 import warnings
 from utils.utils import seed_torch
-from utils.trainer import train
+from utils.trainer import Trainer
 from pytorch_metric_learning.utils.inference import CustomKNN
 
 warnings.filterwarnings("ignore")
@@ -181,10 +181,14 @@ if __name__ == '__main__':
     train_iter, val_iter, test_iter = train_data_loader, val_data_loader, test_data_loader
 
     writer = SummaryWriter(save_dir)
-    train(model, train_iter, train_dataset_metric, val_iter, val_dataset_metric, [loss_func, xbm_loss_func],
-          num_epoches, accuracy_calculator, save_dir, optimizer=optimizer, loss_optimizer=loss_optimizer,
-          mining_func=loss_miner, writer=writer, knn_model=None, mixup_enable=mixup_enable,
-          xbm_enable=xbm_enable, xbm_start_iteration=xbm_start_iteration, xbm_close=xbm_close,
-          validate_loss=validate_loss, ref_includes_query=False, print_step=10, 
-          save_checkpoint_frequency=save_checkpoint_frequency)
+    
+    # 使用新的Trainer类进行训练
+    trainer = Trainer(model, train_iter, train_dataset_metric, val_iter, val_dataset_metric, [loss_func, xbm_loss_func],
+                      num_epoches, accuracy_calculator, save_dir, optimizer=optimizer, loss_optimizer=loss_optimizer,
+                      mining_func=loss_miner, writer=writer, knn_model=None, mixup_enable=mixup_enable,
+                      xbm_enable=xbm_enable, xbm_start_iteration=xbm_start_iteration, xbm_close=xbm_close,
+                      validate_loss=validate_loss, ref_includes_query=False, print_step=10, 
+                      save_checkpoint_frequency=save_checkpoint_frequency)
+    trainer.train()
+    
     writer.close()

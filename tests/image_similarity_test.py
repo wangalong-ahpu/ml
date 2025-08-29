@@ -44,7 +44,7 @@ def compare_images(image1_path, image2_path, model_path, similarity_threshold=0.
     print(f"Using device: {device}")
     
     # Load model
-    backbone = Backbone(out_dimension=1024, model_name="resnet50", pretrained=False)
+    backbone = Backbone(out_dimension=256, model_name="resnet18", pretrained=False)
     model, _, _ = backbone.build_model()
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.to(device)
@@ -127,4 +127,4 @@ if __name__ == '__main__':
         print(f"Result: {result['result'].upper()}")
 
 
-# python tests/image_similarity_test.py --image1 datasets/imgs/cn/0.jpg --image2 datasets/imgs/cn/0T.jpg --model ./logs/model-acc-299-0.9473-0.9869-0.9526.pth --threshold 0.8 
+# python tests/image_similarity_test.py --image1 datasets/imgs/cn/0.jpg --image2 datasets/imgs/cn/0T.jpg --model /root/autodl-tmp/pytorch-metric-learning-template/logs/ChiSig_q3_SupervisedContrastiveLoss_202508281013/model-acc-122-0.9559-0.9783-0.9626.pth --threshold 0.8 

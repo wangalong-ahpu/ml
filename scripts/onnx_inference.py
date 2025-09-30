@@ -259,37 +259,29 @@ class ONNXPredictor:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='ONNX模型推理工具')
-    parser.add_argument('--model', type=str, required=True,
-                       help='ONNX模型文件路径')
-    parser.add_argument('--input', type=str, required=True,
-                       help='输入图像路径或图像目录')
-    parser.add_argument('--output', type=str,
-                       help='输出结果保存路径')
-    parser.add_argument('--benchmark', action='store_true',
-                       help='运行性能基准测试')
-    parser.add_argument('--similarity', type=str, nargs=2,
-                       help='计算两张图像的相似度，提供两个图像路径')
-    parser.add_argument('--providers', type=str, nargs='+',
-                       help='指定推理提供者，如CUDAExecutionProvider CPUExecutionProvider')
-    
-    args = parser.parse_args()
+    # 简单变量赋值替代命令行参数
+    model_path = "/data/apps/wal/signature_detector/checkpoints/model-acc-122-0.9559-0.9783-0.9626.onnx"  # ONNX模型文件路径
+    input_path = "/data/apps/wal/signature_detector/data/imgs/1754030710565.png"  # 输入图像路径或图像目录
+    output_path = None  # 输出结果保存路径
+    run_benchmark = False  # 是否运行性能基准测试
+    similarity_paths = None  # 计算两张图像的相似度，提供两个图像路径
+    providers = None  # 指定推理提供者，如['CUDAExecutionProvider', 'CPUExecutionProvider']
     
     # 检查模型文件
-    if not os.path.exists(args.model):
-        print(f"错误: ONNX模型文件不存在: {args.model}")
+    if not os.path.exists(model_path):
+        print(f"错误: ONNX模型文件不存在: {model_path}")
         return
     
     # 创建推理器
     try:
-        predictor = ONNXPredictor(args.model, providers=args.providers)
+        predictor = ONNXPredictor(model_path, providers=providers)
     except Exception as e:
         print(f"初始化推理器失败: {e}")
         return
     
     # 相似度计算模式
-    if args.similarity:
-        img1, img2 = args.similarity
+    if similarity_paths:
+        img1, img2 = similarity_paths
         if not os.path.exists(img1) or not os.path.exists(img2):
             print("错误: 图像文件不存在")
             return
@@ -302,13 +294,13 @@ def main():
         return
     
     # 性能测试模式
-    if args.benchmark:
-        if not os.path.exists(args.input):
-            print(f"错误: 输入文件不存在: {args.input}")
+    if run_benchmark:
+        if not os.path.exists(input_path):
+            print(f"错误: 输入文件不存在: {input_path}")
             return
         
         try:
-            results = predictor.benchmark(args.input)
+            results = predictor.benchmark(input_path)
             print("性能基准测试结果:")
             print(f"平均推理时间: {results['mean_time']:.4f} 秒")
             print(f"标准差: {results['std_time']:.4f} 秒")
@@ -316,38 +308,38 @@ def main():
             print(f"最大时间: {results['max_time']:.4f} 秒")
             print(f"FPS: {results['fps']:.2f}")
             
-            if args.output:
-                with open(args.output, 'w', encoding='utf8') as f:
+            if output_path:
+                with open(output_path, 'w', encoding='utf8') as f:
                     json.dump(results, f, indent=2, ensure_ascii=False)
-                print(f"结果已保存至: {args.output}")
+                print(f"结果已保存至: {output_path}")
                 
         except Exception as e:
             print(f"性能测试失败: {e}")
         return
     
     # 推理模式
-    if not os.path.exists(args.input):
-        print(f"错误: 输入文件不存在: {args.input}")
+    if not os.path.exists(input_path):
+        print(f"错误: 输入文件不存在: {input_path}")
         return
     
     try:
-        if os.path.isfile(args.input):
+        if os.path.isfile(input_path):
             # 单个文件推理
-            output, inference_time = predictor.predict(args.input, return_raw=True)
+            output, inference_time = predictor.predict(input_path, return_raw=True)
             print(f"推理完成，耗时: {inference_time:.4f} 秒")
             print(f"输出形状: {output.shape}")
             print(f"特征向量: {output.flatten()[:10]}...")  # 显示前10个值
             
-            if args.output:
-                np.save(args.output, output)
-                print(f"结果已保存至: {args.output}")
+            if output_path:
+                np.save(output_path, output)
+                print(f"结果已保存至: {output_path}")
         
-        elif os.path.isdir(args.input):
+        elif os.path.isdir(input_path):
             # 批量推理
             image_files = []
             for ext in ['*.jpg', '*.jpeg', '*.png', '*.bmp']:
-                image_files.extend(glob.glob(os.path.join(args.input, ext)))
-                image_files.extend(glob.glob(os.path.join(args.input, ext.upper())))
+                image_files.extend(glob.glob(os.path.join(input_path, ext)))
+                image_files.extend(glob.glob(os.path.join(input_path, ext.upper())))
             
             if not image_files:
                 print("错误: 未找到图像文件")
@@ -361,15 +353,15 @@ def main():
             print(f"平均推理时间: {np.mean(inference_times):.4f} 秒")
             print(f"输出形状: {batch_results.shape}")
             
-            if args.output:
+            if output_path:
                 result_dict = {
                     'files': image_files,
                     'features': batch_results.tolist(),
                     'inference_times': inference_times
                 }
-                with open(args.output, 'w', encoding='utf8') as f:
+                with open(output_path, 'w', encoding='utf8') as f:
                     json.dump(result_dict, f, indent=2, ensure_ascii=False)
-                print(f"结果已保存至: {args.output}")
+                print(f"结果已保存至: {output_path}")
         
     except Exception as e:
         print(f"推理失败: {e}")

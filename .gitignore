@@ -1,6 +1,6 @@
 *.jpg
 *.png
-*.pth
+# *.pth
 *.pyc
 *.zip
 *.out.*

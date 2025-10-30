@@ -2,10 +2,10 @@
 in_channels: 3
 # 训练数据存放位置
 #train_dataset_dir: "./datasets/cat_and_dog"
-train_dataset_dir: "/root/autodl-tmp/pytorch-metric-learning-template/datasets/signature_cn_eng"
+train_dataset_dir: "/root/autodl-tmp/ml/datasets/ChiSig_q3_with_bj"
 # 训练结果保存位置
 #save_dir: "./results/cat_and_dog_2_256_TripletMarginLoss"
-save_dir: "./logs/ChiSig_q3_SupervisedContrastiveLoss_202508281417"
+save_dir: "./logs/genuine_with_bj_20251030_v3"
 # 预训练模型存放位置
 pretrained_models: "./pretrained_models/"
 # 是否计算验证集上的损失
@@ -52,9 +52,9 @@ device: [0] #[0, 1, 2, 3]
 # 训练的batch大小，等于 batch_size = m_class_per_batch * m_sample_per_class，训练度量学习模型，batch_size 设置的尽量大
 #batch_size: 320
 # batch size中包含的类别数量，保持样本均衡，当总体的类别数小于m_class_per_batch时，m_class_per_batch的值等于类别数
-m_class_per_batch: 200
+m_class_per_batch: 50 #200
 # batch size中包含的每个类别的样本数量,batch_size = m_class_per_batch * m_sample_per_class
-m_sample_per_class: 5
+m_sample_per_class: 20  # 5
 # 训练集的比例
 train_ratio: 0.8
 # 验证集的比例

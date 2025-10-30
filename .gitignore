@@ -1,7 +1,10 @@
 *.jpg
 *.png
-# *.pth
+*.pth
 *.pyc
 *.zip
 *.out.*
 *.onnx
+*.data
+*.ipynb_checkpoints/*
+*/.ipynb_checkpoints/*

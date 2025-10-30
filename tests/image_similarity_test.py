@@ -99,10 +99,16 @@ def compare_images(image1_path, image2_path, model_path, similarity_threshold=0.
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Compare similarity between two images')
-    parser.add_argument('--image1', required=True, help='Path to first image')
-    parser.add_argument('--image2', required=True, help='Path to second image')
-    parser.add_argument('--model', required=True, help='Path to trained model')
-    parser.add_argument('--threshold', type=float, default=0.8, help='Similarity threshold (default: 0.8)')
+    # parser.add_argument('--image1', default="/root/autodl-tmp/ml/datasets/tests/wl1.jpg", help='Path to first image')
+    parser.add_argument('--image1', default="/root/autodl-tmp/ml/datasets/tests/zyb.png", help='Path to first image')
+    # parser.add_argument('--image1', default="/root/autodl-tmp/ml/datasets/tests/rql.png", help='Path to first image')
+    # parser.add_argument('--image2', default="/root/autodl-tmp/ml/datasets/tests/rql.png", help='Path to second image')
+    # parser.add_argument('--image2', default="/root/autodl-tmp/ml/datasets/tests/rql.png", help='Path to second image')
+    parser.add_argument('--image2', default="/root/autodl-tmp/ml/datasets/tests/zyb2.png", help='Path to second image')
+    # parser.add_argument('--image2', default="/root/autodl-tmp/ml/datasets/tests/rql2.png", help='Path to second image')
+    # parser.add_argument('--image2', default="/root/autodl-tmp/ml/datasets/tests/wl2.jpg", help='Path to second image')
+    parser.add_argument('--model', default="logs/genuine_with_bj_20251030_v3/weights/model-acc-043-0.9732-1.0000-0.9759.pth", help='Path to trained model')
+    parser.add_argument('--threshold', type=float, default=0.85, help='Similarity threshold (default: 0.8)')
     
     args = parser.parse_args()
     
@@ -127,4 +133,6 @@ if __name__ == '__main__':
         print(f"Result: {result['result'].upper()}")
 
 
-# python tests/image_similarity_test.py --image1 datasets/imgs/cn/0.jpg --image2 datasets/imgs/cn/0T.jpg --model /root/autodl-tmp/pytorch-metric-learning-template/logs/ChiSig_q3_SupervisedContrastiveLoss_202508281013/model-acc-122-0.9559-0.9783-0.9626.pth --threshold 0.8 
+# python tests/image_similarity_test.py --image1 /root/autodl-tmp/ml/datasets/tests/mjl.jpg --image2 /root/autodl-tmp/ml/datasets/tests/rql.png --model /root/autodl-tmp/ml/logs/genuine_with_bj_20251030/weights/model-acc-005-0.9761-1.0000-0.9776.pth --threshold 0.8 
+
+# python tests/image_similarity_test.py --image1 /root/autodl-tmp/ml/datasets/tests/wl1.jpg --image2 /root/autodl-tmp/ml/datasets/tests/mjl.jpg --model /root/autodl-tmp/ml/logs/genuine_with_bj_20251030_v3/weights/model-acc-003-0.8878-0.9998-0.8985.pth --threshold 0.8

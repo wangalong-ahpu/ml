@@ -188,3 +188,8 @@ if __name__ == '__main__':
 
 
 # python convert_to_onnx.py --model_path /root/autodl-tmp/backup/logs/model-acc-122-0.9559-0.9783-0.9626.pth --output_path /root/autodl-tmp/backup/logs/model-acc-122-0.9559-0.9783-0.9626.onnx --verify
+# python scripts/convert_to_onnx.py --model_path /root/autodl-tmp/ml/logs/genuine_with_bj/weights/model-acc-121-1.0000-1.0000-1.0000.pth --output_path /root/autodl-tmp/ml/logs/genuine_with_bj/weights/model-acc-121-1.0000-1.0000-1.0000.onnx --verify
+
+
+
+# python scripts/convert_to_onnx.py --model_path /root/autodl-tmp/ml/logs/genuine_with_bj_20251030/weights/model-acc-077-0.9997-1.0000-0.9997.pth --output_path /root/autodl-tmp/ml/logs/genuine_with_bj_20251030/weights/model-acc-077-0.9997-1.0000-0.9997.onnx

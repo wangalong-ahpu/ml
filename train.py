@@ -90,9 +90,9 @@ if __name__ == '__main__':
         # RandomGaussianBlur(kernel_size=(5, 5), p=0.8),
         # torchvision.transforms.RandomInvert(p=invert_ratio),
         # torchvision.transforms.ColorJitter(brightness=0.5, hue=0.0, saturation=0.0, contrast=0.5),
-        torchvision.transforms.RandomHorizontalFlip(p=left_right_flip),
+        # torchvision.transforms.RandomHorizontalFlip(p=left_right_flip),
         # torchvision.transforms.RandomVerticalFlip(p=up_down_flip),
-        # torchvision.transforms.RandomRotation(degrees=15),
+        # torchvision.transforms.RandomRotation(degrees=5),
         ZeroOneNormalize(),
         torchvision.transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ]

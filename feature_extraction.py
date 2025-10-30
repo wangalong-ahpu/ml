@@ -21,8 +21,8 @@ if __name__ == '__main__':
     # model_path = "./results/model_hand_gesture_CircleLoss.pth"
     # data_path = "./datasets/test_data/hand_gesture"
 
-    model_path = "/root/autodl-tmp/pytorch-metric-learning-template/logs/ChiSig_q3_SupervisedContrastiveLoss_202508281013/model-acc-122-0.9559-0.9783-0.9626.pth"
-    data_path = "/root/autodl-tmp/pytorch-metric-learning-template/datasets/eng_test"
+    model_path = "logs/genuine_with_bj_20251030_v3/weights/model-acc-043-0.9732-1.0000-0.9759.pth"
+    data_path = "datasets/genuine_test"
 
     # model_path = "./results/cat_and_dog_2_512_SupervisedContrastiveLoss/model-acc-004-0.7579-0.9692-0.7909.pth"
     # data_path = "/aidata/dataset/ImageNet/val"
@@ -56,7 +56,7 @@ if __name__ == '__main__':
             if sample_idx == 20:
                 break
             image_path = os.path.join(dir_path, image_name)
-            print(image_path)
+            # print(image_path)
             try:
                 if use_letterbox:
                     data = cv2.imread(image_path)
@@ -70,7 +70,7 @@ if __name__ == '__main__':
                 feature = model(data)
                 feature = normalize(feature, dim=1)
                 feature = feature.cpu().detach().numpy()
-                print("sample_idx: {}, feature: {}".format(sample_idx, feature.shape))
+                # print("sample_idx: {}, feature: {}".format(sample_idx, feature.shape))
                 feature_data.append(feature)
                 cls_idx_list.append(cls_idx)
                 fps.update()
@@ -90,6 +90,11 @@ if __name__ == '__main__':
     distance = cosine_distances(feature_data, feature_data)
     # distance = euclidean_distances(feature_data, feature_data)
     similarity = 1.0 - distance
+    
+    # 将小于指定阈值的相似度设为0
+    # threshold = 0.8  # 可以根据需求调整阈值
+    # similarity[similarity < threshold] = 0
+    
     print(similarity)
 
     plt.figure(figsize=(50, 50))
@@ -97,5 +102,5 @@ if __name__ == '__main__':
     for i in range(similarity.shape[0]):
         for j in range(similarity.shape[1]):
             plt.text(j, i, "{:.1f}".format(similarity[i, j]), ha='center', va='center', color='w')
-    plt.savefig("./results/plot_matrix_with_value66.jpg")
+    plt.savefig("./plot_matrix_with_value_43.jpg")
     plt.show()
